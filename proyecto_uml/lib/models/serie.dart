@@ -4,7 +4,9 @@ class Serie {
   String? _codigo;
   String? _descripcion;
 
-  List<SubSerie> _subSerie = [];
+  //Map<String, SubSerie> _subSeries = {};
+
+  List<SubSerie> _subSeries = [];
 
   Serie({required String codigo, required String descripcion}) {
     _codigo = codigo;
@@ -27,14 +29,28 @@ class Serie {
     return _descripcion!;
   }
 
+  // Método para obtener una subserie por su código
+  SubSerie? obtenerSubseriePorCodigo(String codigoSubSerie) {
+    try {
+      return _subSeries.firstWhere((subSerie) => subSerie._codigo == codigoSubSerie);
+    } catch (e) {
+      return null; // Si no se encuentra la subserie, retorna null
+    }
+  }
+
+  bool contieneSubserie(SubSerie subserie) {
+    // Verificar si ya existe una subserie con el mismo código
+    return _subSeries.any((s) => s._codigo == subserie._codigo);
+  }
+
   void agregarSubserie(SubSerie subSerie) {
-    _subSerie.add(subSerie);
+    //_subSeries[subSerie.obtenerCodigo] = subSerie;
+    _subSeries.add(subSerie);
   }
 
   void mostarSubSerie() {
-    print("SubSeries de la serie $_codigo :");
-    for (var busquedaSerie in _subSerie) {
-      print("${busquedaSerie.obtenerCodigo}, ${busquedaSerie.obtenerDescripicion}");
+    for (var subserie in _subSeries) {
+      print("Subserie: ${subserie._codigo} - ${subserie._descripcion}");
     }
   }
 }

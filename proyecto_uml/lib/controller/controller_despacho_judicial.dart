@@ -43,4 +43,8 @@ class ControllerDespachoJudicial {
   List<Departamento> obtenerDepartamentos() {
     return _departamentos;
   }
+
+  List<DespachoJudicial> obtenerListaDespacho() {
+    return _despachosJudicialesRegistrado;
+  }
 }

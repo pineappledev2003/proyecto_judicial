@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:proyecto_uml/controller/controller_despacho_judicial.dart';
 import 'package:proyecto_uml/models/ciudad.dart';
 import 'package:proyecto_uml/models/departamento.dart';
+import 'package:validatorless/validatorless.dart';
 
 class RegistarDespachoJudicial extends StatefulWidget {
   final ControllerDespachoJudicial? controllerDespachoJudicial;
@@ -14,8 +15,11 @@ class RegistarDespachoJudicial extends StatefulWidget {
 
 class _RegistarDespachoJudicialState extends State<RegistarDespachoJudicial> {
   final _formKey = GlobalKey<FormState>();
+  String? _codigoDespachoJudicial;
   Departamento? _seleccionarDepartamento;
   Ciudad? _seleccionarCiudad;
+  String? _nombreDespachoJudicial;
+  String? _categoria;
   List<Ciudad> _ciudades = [];
 
   @override
@@ -26,6 +30,18 @@ class _RegistarDespachoJudicialState extends State<RegistarDespachoJudicial> {
         key: _formKey,
         child: Column(
           children: [
+            TextFormField(
+              decoration: InputDecoration(label: Text("INGRESAR EL CODIGO DESPACHO")),
+              keyboardType: TextInputType.number,
+              maxLength: 10,
+              onSaved: (newValue) {
+                _codigoDespachoJudicial = newValue;
+              },
+              validator: Validatorless.multiple([
+                Validatorless.required("Este campo es requerido"),
+              ]),
+            ),
+
             DropdownButton<Departamento>(
               hint: Text("Seleccione un departamento"),
               value: _seleccionarDepartamento,
@@ -77,6 +93,62 @@ class _RegistarDespachoJudicialState extends State<RegistarDespachoJudicial> {
                   });
                 },
               ),
+            TextFormField(
+              decoration: InputDecoration(label: Text("INGRESAR EL NOMBRE DEL DESPACHO")),
+              keyboardType: TextInputType.text,
+              maxLength: 15,
+              onSaved: (newValue) {
+                _nombreDespachoJudicial = newValue;
+              },
+              validator: Validatorless.multiple([
+                Validatorless.required("Este campo es requerido"),
+              ]),
+            ),
+            TextFormField(
+              decoration: InputDecoration(label: Text("INGRESAR LA CATEGORIA")),
+              keyboardType: TextInputType.text,
+              onSaved: (newValue) {
+                _categoria = newValue;
+              },
+              validator: Validatorless.multiple([
+                Validatorless.required("Este campo es requerido"),
+              ]),
+            ),
+
+            ElevatedButton(
+              onPressed: () {
+                if (_formKey.currentState!.validate()) {
+                  _formKey.currentState!.save();
+
+                  widget.controllerDespachoJudicial!.registarDespacho(
+                    _codigoDespachoJudicial!,
+                    _seleccionarDepartamento!,
+                    _seleccionarCiudad!,
+                    _nombreDespachoJudicial!,
+                    _categoria!,
+                  );
+
+                  for (var busquedaDespacho
+                      in widget.controllerDespachoJudicial!.obtenerListaDespacho()) {
+                    print("Codigo Despacho :${busquedaDespacho.obtenerCodigoDespacho}");
+                    print(
+                      "Departamento :${busquedaDespacho.obtenerDepartamento.obtenerNombreDepartamento}",
+                    );
+                    print("Ciudad :${busquedaDespacho.obtenerCiudad.obtenerNombreCiudad}");
+                    print("NombreDespachoJudicial :${busquedaDespacho.obtenerNombreDespacho}");
+                    print("Categoria :${busquedaDespacho.obtenerCategoria}");
+                  }
+                }
+              },
+              child: Text("Registar Despacho"),
+            ),
+            SizedBox(height: 100),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pushNamed("/RegistarSerie");
+              },
+              child: const Text("REGISTAR SERIE"),
+            ),
           ],
         ),
       ),

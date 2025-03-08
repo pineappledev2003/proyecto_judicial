@@ -6,8 +6,16 @@ class SubSerie extends Serie {
 
   SubSerie({required super.codigo, required super.descripcion});
 
-  void agregarTipoDocumentalSubSerie(TipoDocumental tipoDocumental) {
+  void agregarTipoDocumental(TipoDocumental tipoDocumental) {
     _tipoDocumentales.add(tipoDocumental);
+  }
+
+  // void agregarTipoDocumentalSubSerie(List<TipoDocumental> tipoDocumental) {
+  //   _tipoDocumentales.addAll(tipoDocumental);
+  // }
+
+  List<TipoDocumental> get obtenerTipoDocumentales {
+    return _tipoDocumentales;
   }
 
   void mostrarTipoDocumental() {
