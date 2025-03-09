@@ -2,7 +2,7 @@ import 'package:proyecto_uml/models/serie.dart';
 import 'package:proyecto_uml/models/tipo_documental.dart';
 
 class SubSerie extends Serie {
-  List<TipoDocumental> _tipoDocumentales = [];
+  final List<TipoDocumental> _tipoDocumentales = [];
 
   SubSerie({required super.codigo, required super.descripcion});
 

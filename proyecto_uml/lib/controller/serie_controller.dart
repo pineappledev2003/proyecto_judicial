@@ -3,7 +3,7 @@ import 'package:proyecto_uml/models/sub_serie.dart';
 import 'package:proyecto_uml/models/tipo_documental.dart';
 
 class SerieController {
-  List<Serie> _series = [];
+  final List<Serie> _series = [];
 
   SerieController() {
     _inicializarSeriesPredefinidas();

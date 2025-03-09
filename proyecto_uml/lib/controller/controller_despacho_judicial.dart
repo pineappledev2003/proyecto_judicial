@@ -7,11 +7,11 @@ class ControllerDespachoJudicial {
   // yo lo que necesito es que mi controlador pueda recibir esa lista para luego poder sacar el departamento y las ciudades que lo conforman
 
   // por esta razon se declara una lista de departamentos
-  List<Departamento> _departamentos;
+  final List<Departamento> _departamentos;
 
   ControllerDespachoJudicial(this._departamentos);
 
-  List<DespachoJudicial> _despachosJudicialesRegistrado = [];
+  final List<DespachoJudicial> _despachosJudicialesRegistrado = [];
 
   void registarDespacho(
     String codigoDespacho,

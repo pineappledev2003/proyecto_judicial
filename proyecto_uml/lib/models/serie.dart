@@ -6,7 +6,7 @@ class Serie {
 
   //Map<String, SubSerie> _subSeries = {};
 
-  List<SubSerie> _subSeries = [];
+  final List<SubSerie> _subSeries = [];
 
   Serie({required String codigo, required String descripcion}) {
     _codigo = codigo;
