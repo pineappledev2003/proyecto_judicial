@@ -15,9 +15,7 @@ class FormSerie extends StatefulWidget {
 
 class _FormSerieState extends State<FormSerie> {
   final TextEditingController _codigoSerieController = TextEditingController();
-  final TextEditingController _codigoSubserieController = TextEditingController();
   final TextEditingController _descSerieController = TextEditingController();
-  final TextEditingController _descSubserieController = TextEditingController();
 
   void _handleSubmit() {
     Notificacion.mostrar("Registro guardado correctamente");
@@ -34,8 +32,6 @@ class _FormSerieState extends State<FormSerie> {
           SizedBox(height: 20.0,),
           CustomInput(label: "Código de Serie", controller: _codigoSerieController),
           CustomInput(label: "Descripción de Serie", controller: _descSerieController),
-          CustomInput(label: "Código de Subserie", controller: _codigoSubserieController),
-          CustomInput(label: "Descripción de Subserie", controller: _descSubserieController),
           CustomButton(text: "Registrar", onPressed: _handleSubmit),
         ],
       ),

@@ -4,6 +4,7 @@ import 'package:proyecto_uml/view/content/form_despacho.dart';
 import 'package:proyecto_uml/view/content/form_documental.dart';
 import 'package:proyecto_uml/view/content/form_registro.dart';
 import 'package:proyecto_uml/view/content/form_serie.dart';
+import 'package:proyecto_uml/view/content/form_subserie.dart';
 import 'package:proyecto_uml/view/sidebar/widgets/sidebar_item.dart';
 import 'package:proyecto_uml/view/sidebar/widgets/siderbar_subitem.dart';
 
@@ -53,9 +54,14 @@ class _SidebarState extends State<Sidebar> {
                 onTap: () => widget.onItemSelected(FormDespacho(title: "Registro de despacho")),
               ),
               SidebarSubItem(
-                title: 'Serie/Subserie',
+                title: 'Serie',
                 icon: Icons.numbers,
-                onTap: () => widget.onItemSelected(FormSerie(title: "Registro de Serie y Subserie")),
+                onTap: () => widget.onItemSelected(FormSerie(title: "Registro de Serie")),
+              ),
+              SidebarSubItem(
+                title: 'Sub serie',
+                icon: Icons.format_list_numbered_sharp,
+                onTap: () => widget.onItemSelected(FormSubSerie(title: "Registro de Subserie")),
               ),
               SidebarSubItem(
                 title: 'Tipo documental',
