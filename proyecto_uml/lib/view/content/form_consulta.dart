@@ -3,7 +3,6 @@ import 'package:proyecto_uml/view/custom_widgets/button.dart';
 import 'package:proyecto_uml/view/custom_widgets/input.dart';
 import 'package:proyecto_uml/utils/notification.dart';
 
-
 class FormConsulta extends StatefulWidget {
   final String title;
 

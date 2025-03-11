@@ -35,6 +35,7 @@ class _FormPersonaState extends State<FormPersona> {
           children: [
             Text(widget.title, style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold)),
             SizedBox(height: 20.0),
+            CustomInput(label: "Nombre", controller: _nombreController),
             Row(
               children: [
                 Expanded(
@@ -49,7 +50,7 @@ class _FormPersonaState extends State<FormPersona> {
                     ),
                   ),
                 ),
-                CustomInput(label: "Número", controller: _numeroController),
+                Expanded(child:CustomInput(label: "Número", controller: _numeroController)),
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -64,7 +65,6 @@ class _FormPersonaState extends State<FormPersona> {
                 ),
               ],
             ),
-            CustomInput(label: "Nombre", controller: _nombreController),
             SizedBox(height: 10),
             CustomButton(text: "Registrar", onPressed: _handleSubmit),
           ],
