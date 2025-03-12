@@ -1,56 +1,36 @@
-import 'package:proyecto_uml/models/sub_serie.dart';
+import 'package:proyecto_uml/models/subserie.dart';
 
 class Serie {
-  String? _codigo;
-  String? _descripcion;
+  String? _codigoSerie;
+  String? _descripcionSerie;
+  Map<String, SubSerie> _subSeries = {};
 
-  //Map<String, SubSerie> _subSeries = {};
-
-  List<SubSerie> _subSeries = [];
-
-  Serie({required String codigo, required String descripcion}) {
-    _codigo = codigo;
-    _descripcion = descripcion;
+  Serie({required String codigoSerie, required String descripcionSerie}) {
+    _codigoSerie = codigoSerie;
+    _descripcionSerie = descripcionSerie;
   }
 
-  set cambiarCodigo(String nuevoCodigo) {
-    _codigo = nuevoCodigo;
+  set cambiarCodigoSerie(String nuevoCodigoSerie) {
+    _codigoSerie = nuevoCodigoSerie;
   }
 
-  set cambiarDescripcion(String nuevaDescripcion) {
-    _descripcion = nuevaDescripcion;
+  set cambiarDescripcionSerie(String nuevaDescripcionSerie) {
+    _descripcionSerie = nuevaDescripcionSerie;
   }
 
-  String get obtenerCodigo {
-    return _codigo!;
+  String get obtenerCodigoSerie {
+    return _codigoSerie!;
   }
 
-  String get obtenerDescripicion {
-    return _descripcion!;
+  String get obtenerDescripcionSerie {
+    return _descripcionSerie!;
   }
 
-  // Método para obtener una subserie por su código
-  SubSerie? obtenerSubseriePorCodigo(String codigoSubSerie) {
-    try {
-      return _subSeries.firstWhere((subSerie) => subSerie._codigo == codigoSubSerie);
-    } catch (e) {
-      return null; // Si no se encuentra la subserie, retorna null
-    }
+  void agregarSubSerie(SubSerie subSerie) {
+    _subSeries[subSerie.obtenerCodigoSubSerie] = subSerie;
   }
 
-  bool contieneSubserie(SubSerie subserie) {
-    // Verificar si ya existe una subserie con el mismo código
-    return _subSeries.any((s) => s._codigo == subserie._codigo);
-  }
-
-  void agregarSubserie(SubSerie subSerie) {
-    //_subSeries[subSerie.obtenerCodigo] = subSerie;
-    _subSeries.add(subSerie);
-  }
-
-  void mostarSubSerie() {
-    for (var subserie in _subSeries) {
-      print("Subserie: ${subserie._codigo} - ${subserie._descripcion}");
-    }
+  Map<String, SubSerie> get obtenerMapSubSerie {
+    return _subSeries;
   }
 }

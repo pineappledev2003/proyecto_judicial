@@ -1,127 +1,206 @@
 import 'package:flutter/material.dart';
-import 'package:proyecto_uml/controller/serie_controller.dart';
-import 'package:proyecto_uml/models/sub_serie.dart';
+import 'package:provider/provider.dart';
+import 'package:proyecto_uml/controller/controller_retencion_documental.dart';
+import 'package:proyecto_uml/models/serie.dart';
+import 'package:proyecto_uml/models/subserie.dart';
 import 'package:validatorless/validatorless.dart';
 
-class RegistarSerie extends StatefulWidget {
-  const RegistarSerie({super.key});
+class RegistarSerieSubSerie extends StatefulWidget {
+  const RegistarSerieSubSerie({super.key});
 
   @override
-  State<RegistarSerie> createState() => _RegistarSerieState();
+  State<RegistarSerieSubSerie> createState() => _RegistarSerieSubSerieState();
 }
 
-class _RegistarSerieState extends State<RegistarSerie> {
-  final SerieController _serieController = SerieController();
+class _RegistarSerieSubSerieState extends State<RegistarSerieSubSerie> {
   final _formKey = GlobalKey<FormState>();
-
-  // Variables para la serie
   String? _codigoSerie;
   String? _descripcionSerie;
 
-  // Variables para la subserie
-  String? _codigoSubSerie;
-  String? _descripcionSubSerie;
+  bool _registarSerie = false;
 
-  bool _registrarSerie = false;
-  bool _registrarSubserie = false;
+  List<String>? _codigoSubSerie = [];
+  List<String>? _descripcionSubSerie = [];
+
+  List<SubSerie> _subSeriesTemporales = [];
+  int count = 0;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    count = 1;
+  }
 
   @override
   Widget build(BuildContext context) {
+    final _controllerRetencionDocumental = Provider.of<ControllerRetencionDocumental>(context);
+
     return Scaffold(
-      appBar: AppBar(title: const Text("Registrar Serie y Subserie"), centerTitle: true),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              // Campo para el código de la serie
-              TextFormField(
-                decoration: InputDecoration(label: Text("Código de la Serie")),
-                keyboardType: TextInputType.number,
-                onSaved: (newValue) {
-                  _codigoSerie = newValue;
-                },
-                validator: Validatorless.required("Este campo es requerido"),
+      appBar: AppBar(
+        title: const Text("Registar Serie con SubSerie"),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            onPressed: () {
+              increment();
+            },
+            icon: const Icon(Icons.add),
+          ),
+          IconButton(
+            onPressed: () {
+              decrement(count);
+            },
+            icon: const Icon(Icons.abc),
+          ),
+          IconButton(
+            onPressed: () {
+              refresh();
+            },
+            icon: const Icon(Icons.new_label),
+          ),
+        ],
+      ),
+      body: Form(
+        key: _formKey,
+        child: Column(
+          children: [
+            TextFormField(
+              decoration: InputDecoration(label: Text("INGRESAR EL CODIGO SERIE")),
+              keyboardType: TextInputType.number,
+              onSaved: (newValue) {
+                _codigoSerie = newValue;
+              },
+              validator: Validatorless.multiple([
+                Validatorless.required("Este campo es requerido"),
+              ]),
+            ),
+            TextFormField(
+              decoration: InputDecoration(label: Text("INGRESAR LA DESCRIPCION SERIE")),
+              keyboardType: TextInputType.text,
+              onSaved: (newValue) {
+                _descripcionSerie = newValue;
+              },
+              validator: Validatorless.multiple([
+                Validatorless.required("Este campo es requerido"),
+              ]),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                if (_formKey.currentState!.validate()) {
+                  _formKey.currentState!.save();
+
+                  Serie nuevaSerie = Serie(
+                    codigoSerie: _codigoSerie!,
+                    descripcionSerie: _descripcionSerie!,
+                  );
+
+                  _controllerRetencionDocumental.agregarSerie(nuevaSerie);
+
+                  setState(() {
+                    _registarSerie = true;
+                  });
+                }
+              },
+              child: const Text("Registar Serie"),
+            ),
+
+            if (_registarSerie == true) ...[
+              Expanded(
+                child: ListView.builder(
+                  itemCount: count,
+                  itemBuilder: (context, index) {
+                    return Column(
+                      children: [
+                        TextFormField(
+                          decoration: InputDecoration(label: Text("INGRESAR EL CODIGO SUBSERIE")),
+                          keyboardType: TextInputType.number,
+                          onSaved: (newValue) {
+                            _codigoSubSerie!.add(newValue!);
+                          },
+                          validator: Validatorless.multiple([
+                            Validatorless.required("Este campo es requerido"),
+                          ]),
+                        ),
+                        TextFormField(
+                          decoration: InputDecoration(
+                            label: Text("INGRESAR LA DESCRIPCION SUBSERIE"),
+                          ),
+                          keyboardType: TextInputType.text,
+                          onSaved: (newValue) {
+                            _descripcionSubSerie!.add(newValue!);
+                          },
+                          validator: Validatorless.multiple([
+                            Validatorless.required("Este campo es requerido"),
+                          ]),
+                        ),
+                      ],
+                    );
+                  },
+                ),
               ),
-              // Campo para la descripción de la serie
-              TextFormField(
-                decoration: InputDecoration(label: Text("Descripción de la Serie")),
-                keyboardType: TextInputType.text,
-                onSaved: (newValue) {
-                  _descripcionSerie = newValue;
-                },
-                validator: Validatorless.required("Este campo es requerido"),
-              ),
-              // Botón para registrar la serie
+              SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
-                    // Llamamos al controlador para registrar la serie
-                    _serieController.agregarSerieConSubserie(_codigoSerie!, _descripcionSerie!, []);
+
                     setState(() {
-                      _registrarSerie = true;
+                      _subSeriesTemporales.clear();
+
+                      for (int i = 0; i < _codigoSubSerie!.length; i++) {
+                        if (!_subSeriesTemporales.any(
+                          (existeSubSerie) =>
+                              existeSubSerie.obtenerCodigoSubSerie == _codigoSubSerie![i],
+                        )) {
+                          _subSeriesTemporales.add(
+                            SubSerie(
+                              codigoSubSerie: _codigoSubSerie![i],
+                              descripcionSubSerie: _descripcionSubSerie![i],
+                            ),
+                          );
+                        }
+                      }
                     });
+
+                    _controllerRetencionDocumental.agregarSubSerie(
+                      _codigoSerie!,
+                      _subSeriesTemporales,
+                    );
                   }
                 },
-                child: const Text("Registrar Serie"),
+                child: const Text("Registar SubSerie"),
               ),
-              // Solo mostrar si la serie ha sido registrada
-              if (_registrarSerie) ...[
-                SizedBox(height: 20),
-                // Campo para el código de la subserie
-                TextFormField(
-                  decoration: InputDecoration(label: Text("Código de la Subserie")),
-                  keyboardType: TextInputType.number,
-                  onSaved: (newValue) {
-                    _codigoSubSerie = newValue;
-                  },
-                  validator: Validatorless.required("Este campo es requerido"),
-                ),
-                // Campo para la descripción de la subserie
-                TextFormField(
-                  decoration: InputDecoration(label: Text("Descripción de la Subserie")),
-                  keyboardType: TextInputType.text,
-                  onSaved: (newValue) {
-                    _descripcionSubSerie = newValue;
-                  },
-                  validator: Validatorless.required("Este campo es requerido"),
-                ),
-                // Botón para registrar la subserie
-                ElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      _formKey.currentState!.save();
-                      // Crear la nueva subserie
-                      SubSerie nuevaSubSerie = SubSerie(
-                        codigo: _codigoSubSerie!,
-                        descripcion: _descripcionSubSerie!,
-                      );
-                      // Agregar la subserie a la serie registrada
-                      _serieController.agregarSerieConSubserie(_codigoSerie!, _descripcionSerie!, [
-                        nuevaSubSerie,
-                      ]);
-                      setState(() {
-                        _registrarSubserie = true;
-                      });
-                    }
-                  },
-                  child: const Text("Registrar Subserie"),
-                ),
-              ],
               SizedBox(height: 20),
-              // Mostrar las series registradas
               ElevatedButton(
                 onPressed: () {
-                  _serieController.mostrarSeries();
+                  _controllerRetencionDocumental.mostrar();
                 },
-                child: const Text("Mostrar Series Registradas"),
+                child: const Text("Mostar"),
               ),
             ],
-          ),
+          ],
         ),
       ),
     );
+  }
+
+  void increment() {
+    setState(() {
+      count++;
+    });
+  }
+
+  void decrement(int count) {
+    if (count > 1) {
+      count--;
+    }
+  }
+
+  void refresh() {
+    setState(() {
+      count = 1;
+    });
   }
 }

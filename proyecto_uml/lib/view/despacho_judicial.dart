@@ -1,13 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:proyecto_uml/controller/controller_despacho_judicial.dart';
 import 'package:proyecto_uml/models/ciudad.dart';
 import 'package:proyecto_uml/models/departamento.dart';
 import 'package:validatorless/validatorless.dart';
 
 class RegistarDespachoJudicial extends StatefulWidget {
-  final ControllerDespachoJudicial? controllerDespachoJudicial;
-  const RegistarDespachoJudicial({super.key, required this.controllerDespachoJudicial});
+  const RegistarDespachoJudicial({super.key});
 
   @override
   State<RegistarDespachoJudicial> createState() => _RegistarDespachoJudicialState();
@@ -24,6 +24,7 @@ class _RegistarDespachoJudicialState extends State<RegistarDespachoJudicial> {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Provider.of<ControllerDespachoJudicial>(context);
     return Scaffold(
       appBar: AppBar(title: const Text("Registar Despacho"), centerTitle: true),
       body: Form(
@@ -51,9 +52,7 @@ class _RegistarDespachoJudicialState extends State<RegistarDespachoJudicial> {
               // Por eso, en el map usamos Departamento departamento.
               // Esto es necesario porque DropdownButton espera una lista de DropdownMenuItem en su propiedad items.
               items:
-                  widget.controllerDespachoJudicial!.obtenerDepartamentos().map((
-                    Departamento departamento,
-                  ) {
+                  controller.obtenerDepartamentos().map((Departamento departamento) {
                     return DropdownMenuItem(
                       value: departamento,
                       child: Text(departamento.obtenerNombreDepartamento),
@@ -68,9 +67,7 @@ class _RegistarDespachoJudicialState extends State<RegistarDespachoJudicial> {
                   _seleccionarDepartamento = newValue;
 
                   //Cuando seleccione un departemento este se vendra buscar en este metodo
-                  _ciudades = widget.controllerDespachoJudicial!.obtenerCiudadesPorDepartamento(
-                    newValue!,
-                  );
+                  _ciudades = controller.obtenerCiudadesPorDepartamento(newValue!);
                   // Aseguramos el correcto cambio de la ciudad cuando el departamento es cambiado
                   _seleccionarCiudad = null;
                 });
@@ -120,7 +117,7 @@ class _RegistarDespachoJudicialState extends State<RegistarDespachoJudicial> {
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
 
-                  widget.controllerDespachoJudicial!.registarDespacho(
+                  controller.registarDespacho(
                     _codigoDespachoJudicial!,
                     _seleccionarDepartamento!,
                     _seleccionarCiudad!,
@@ -128,8 +125,7 @@ class _RegistarDespachoJudicialState extends State<RegistarDespachoJudicial> {
                     _categoria!,
                   );
 
-                  for (var busquedaDespacho
-                      in widget.controllerDespachoJudicial!.obtenerListaDespacho()) {
+                  for (var busquedaDespacho in controller.obtenerListaDespacho()) {
                     print("Codigo Despacho :${busquedaDespacho.obtenerCodigoDespacho}");
                     print(
                       "Departamento :${busquedaDespacho.obtenerDepartamento.obtenerNombreDepartamento}",
@@ -142,12 +138,33 @@ class _RegistarDespachoJudicialState extends State<RegistarDespachoJudicial> {
               },
               child: Text("Registar Despacho"),
             ),
-            SizedBox(height: 100),
+            SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 Navigator.of(context).pushNamed("/RegistarSerie");
               },
               child: const Text("REGISTAR SERIE"),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pushNamed("/registarTipoDocumental");
+              },
+              child: const Text("REGISTAR TIPO DOCUMENTAL"),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pushNamed("/registrarExpediente");
+              },
+              child: const Text("expediente"),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pushNamed("/registarPersona");
+              },
+              child: const Text("Persona"),
             ),
           ],
         ),

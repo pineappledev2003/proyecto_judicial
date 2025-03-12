@@ -1,8 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:proyecto_uml/models/ciudad.dart';
-import 'package:proyecto_uml/models/depacho_judicial.dart';
+import 'package:proyecto_uml/models/despacho_judicial.dart';
 import 'package:proyecto_uml/models/departamento.dart';
 
-class ControllerDespachoJudicial {
+class ControllerDespachoJudicial extends ChangeNotifier {
   // Mi controlador va a recbir una lista de departamentos esto debido a que en departamento_data.dart ya devuelvo una lista de departamentos con sus ciudades
   // yo lo que necesito es que mi controlador pueda recibir esa lista para luego poder sacar el departamento y las ciudades que lo conforman
 
@@ -29,6 +30,7 @@ class ControllerDespachoJudicial {
     );
 
     _despachosJudicialesRegistrado.add(despacho);
+    notifyListeners();
   }
 
   // Este metodo recibe un objeto "Departamento" como parametro en lugar de una lista de departamentos
