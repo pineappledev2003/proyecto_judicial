@@ -1,13 +1,18 @@
-import 'package:proyecto_uml/models/tipo_docuemental.dart';
+import 'package:proyecto_uml/models/tipo_documental.dart';
 
 class SubSerie {
   String? _codigoSubSerie;
   String? _descripcionSubSerie;
-  List<TipoDocuemental> _tiposDocumentales = [];
+  List<TipoDocumental>? _tiposDocumentales;
 
-  SubSerie({required String codigoSubSerie, required String descripcionSubSerie}) {
+  SubSerie({
+    required String codigoSubSerie,
+    required String descripcionSubSerie,
+    List<TipoDocumental>? tipoDocumentales,
+  }) {
     _codigoSubSerie = codigoSubSerie;
     _descripcionSubSerie = descripcionSubSerie;
+    _tiposDocumentales = tipoDocumentales ?? [];
   }
 
   set cambiarCodigoSubSerie(String nuevoCodigoSubSerie) {
@@ -26,11 +31,11 @@ class SubSerie {
     return _descripcionSubSerie!;
   }
 
-  void agregarTipoDocumental(TipoDocuemental tipoDocumental) {
-    _tiposDocumentales.add(tipoDocumental);
+  List<TipoDocumental> get obtenerTiposDocumentales {
+    return _tiposDocumentales!;
   }
 
-  List<TipoDocuemental> get obtenerListaTipoDocumentales {
-    return _tiposDocumentales;
+  void agregarTipoDocumental(TipoDocumental tipoDocumental) {
+    _tiposDocumentales!.add(tipoDocumental);
   }
 }

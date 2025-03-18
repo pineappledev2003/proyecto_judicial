@@ -3,6 +3,7 @@ import 'package:proyecto_uml/models/despacho_judicial.dart';
 import 'package:proyecto_uml/models/persona.dart';
 import 'package:proyecto_uml/models/serie.dart';
 import 'package:proyecto_uml/models/subserie.dart';
+import 'package:proyecto_uml/models/tipo_documental.dart';
 
 class Expediente {
   DespachoJudicial? _despachoJudicial;
@@ -31,7 +32,7 @@ class Expediente {
     _serie = serie;
     _subSerie = subSerie;
     _personasTipoA = personaTipoA;
-    _personasTipoB = _personasTipoB;
+    _personasTipoB = personaTipoB;
     _cuadernos = cuadernos;
     _expedienteFisico = expedienteFisico;
     _documentoFisico = documentoFisico;
@@ -83,5 +84,14 @@ class Expediente {
 
   bool get obtenerDocumentoFisico {
     return _documentoFisico!;
+  }
+
+
+  List<TipoDocumental> obtenerTiposDocumentales() {
+    return _subSerie!.obtenerTiposDocumentales; // Directamente de la SubSerie
+  }
+
+  List<Cuaderno> obtenerCuadernos() {
+    return _cuadernos!.values.toList(); // Convertimos el Map en una Lista de Cuadernos
   }
 }

@@ -3,11 +3,16 @@ import 'package:proyecto_uml/models/subserie.dart';
 class Serie {
   String? _codigoSerie;
   String? _descripcionSerie;
-  Map<String, SubSerie> _subSeries = {};
+  Map<String, SubSerie>? _subSeries;
 
-  Serie({required String codigoSerie, required String descripcionSerie}) {
+  Serie({
+    required String codigoSerie,
+    required String descripcionSerie,
+    Map<String, SubSerie>? subSeries,
+  }) {
     _codigoSerie = codigoSerie;
     _descripcionSerie = descripcionSerie;
+    _subSeries = subSeries ?? {};
   }
 
   set cambiarCodigoSerie(String nuevoCodigoSerie) {
@@ -26,11 +31,11 @@ class Serie {
     return _descripcionSerie!;
   }
 
-  void agregarSubSerie(SubSerie subSerie) {
-    _subSeries[subSerie.obtenerCodigoSubSerie] = subSerie;
+  Map<String, SubSerie> get obtenerSubSerie {
+    return _subSeries!;
   }
 
-  Map<String, SubSerie> get obtenerMapSubSerie {
-    return _subSeries;
+  void agregarSubSerie(SubSerie subSerie) {
+    _subSeries![subSerie.obtenerCodigoSubSerie] = subSerie;
   }
 }

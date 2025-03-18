@@ -1,35 +1,42 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:oktoast/oktoast.dart';
 import 'package:provider/provider.dart';
-import 'package:proyecto_uml/controller/controller_cuaderno.dart';
-import 'package:proyecto_uml/controller/controller_despacho_judicial.dart';
-import 'package:proyecto_uml/controller/controller_expediente.dart';
-import 'package:proyecto_uml/controller/controller_persona.dart';
-import 'package:proyecto_uml/controller/controller_retencion_documental.dart';
-import 'package:proyecto_uml/data/departamentos_data.dart';
-import 'package:proyecto_uml/models/departamento.dart';
-import 'package:proyecto_uml/view/despacho_judicial.dart';
-import 'package:proyecto_uml/view/expediente.dart';
-import 'package:proyecto_uml/view/personas.dart';
-import 'package:proyecto_uml/view/registar_serie.dart';
-import 'package:proyecto_uml/view/registrar_tipo_documental.dart';
-//import 'package:proyecto_uml/view/registar_serie.dart';
+import 'package:proyecto_uml/controllers/cuaderno/cuaderno_controller_list.dart';
+import 'package:proyecto_uml/controllers/cuaderno/cuaderno_controller_map.dart';
+import 'package:proyecto_uml/controllers/departamento_controller.dart';
+import 'package:proyecto_uml/controllers/despacho/despacho_controller_list.dart';
+import 'package:proyecto_uml/controllers/despacho/despacho_controller_map.dart';
+import 'package:proyecto_uml/controllers/expediente/expediente_controller_list.dart';
+import 'package:proyecto_uml/controllers/expediente/expediente_controller_map.dart';
+import 'package:proyecto_uml/controllers/persona/persona_controller_list.dart';
+import 'package:proyecto_uml/controllers/persona/persona_controller_map.dart';
+import 'package:proyecto_uml/controllers/retencion_documental/retencion_documental_controller_list.dart';
+import 'package:proyecto_uml/controllers/retencion_documental/retencion_documental_controller_map.dart';
+import 'package:proyecto_uml/view/home.dart';
 
 void main() {
   runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) => ControllerRetencionDocumental()),
-        ChangeNotifierProvider(
-          create: (context) {
-            List<Departamento> departamentos = obtenerDepartamentos();
-            return ControllerDespachoJudicial(departamentos);
-          },
-        ),
-        ChangeNotifierProvider(create: (context) => ControllerExpediente()),
-        ChangeNotifierProvider(create: (context) => ControllerPersona()),
-        ChangeNotifierProvider(create: (context) => ControllerCuaderno()),
-      ],
-      child: const MyApp(),
+    OKToast(
+      child: MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (context) => DepartamentoController()),
+          ChangeNotifierProvider(create: (context) => DespachoListaController()),
+          ChangeNotifierProvider(create: (context) => DespachoMapaController()),
+          ChangeNotifierProvider(create: (context) => RetencionDocumentalControllerList()),
+          ChangeNotifierProvider(create: (context) => RetencionDocumentalMapaController()),
+
+          ChangeNotifierProvider(create: (context) => ControllerPersonaList()),
+          ChangeNotifierProvider(create: (context) => ControllerPersonaMap()),
+
+          ChangeNotifierProvider(create: (context) => ControllerCuadernoList()),
+          ChangeNotifierProvider(create: (context) => ControllerCuadernoMap()),
+
+          ChangeNotifierProvider(create: (context) => ControllerExpedienteList()),
+          ChangeNotifierProvider(create: (context) => ControllerExpedienteMap()),
+        ],
+        child: const MyApp(),
+      ),
     ),
   );
 }
@@ -40,16 +47,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: "PRUEBA",
-      initialRoute: "/",
-      routes: {
-        //---------- MALOS -----------------------
-        "/": (context) => RegistarDespachoJudicial(),
-        "/RegistarSerie": (context) => RegistarSerieSubSerie(),
-        "/registarTipoDocumental": (context) => RegistrarTipoDocumental(),
-        "/registrarExpediente": (context) => RegistarExpediente(),
-        "/registarPersona": (context) => RegistarPersona(),
-      },
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(textTheme: GoogleFonts.rubikTextTheme()),
+      initialRoute: "/home",
+      routes: {"/home": (context) => Home()},
     );
   }
 }

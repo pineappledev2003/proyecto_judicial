@@ -22,16 +22,24 @@ class DespachoJudicial {
     _categoria = categoria;
   }
 
-  set cambiarCodigoDespacho(String nuevoCodigoDespacho) {
-    _codigoDespacho = nuevoCodigoDespacho;
+  set cambiarCodigoDespacho(String nuevoCodigo) {
+    _codigoDespacho = nuevoCodigo;
+  }
+
+  set cambiarDepartamento(Departamento nuevoDepartamento) {
+    _departamento = nuevoDepartamento;
+  }
+
+  set cambiarCiudad(Ciudad nuevaCiudad) {
+    _ciudad = nuevaCiudad;
   }
 
   set cambiarNombreDespacho(String nuevoNombreDespacho) {
-    _codigoDespacho = nuevoNombreDespacho;
+    _nombreDespachoJudicial = nuevoNombreDespacho;
   }
 
   set cambiarCategoria(String nuevaCategoria) {
-    _codigoDespacho = nuevaCategoria;
+    _categoria = nuevaCategoria;
   }
 
   String get obtenerCodigoDespacho {

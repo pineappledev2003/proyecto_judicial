@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:proyecto_uml/models/persona.dart';
 
-class ControllerPersona extends ChangeNotifier {
-  List<Persona> _personasRegistradas = [];
+class ControllerPersonaList extends ChangeNotifier {
+  final List<Persona> _personasRegistradas = [];
 
   void registarPersona(
     String tipoDocumento,
@@ -11,6 +11,12 @@ class ControllerPersona extends ChangeNotifier {
     String rol,
     String tipoPersona,
   ) {
+    bool existe = _personasRegistradas.any(
+      (buscarNumeroDoc) => buscarNumeroDoc.obtenerNumeroDocumento == numeroDocumento,
+    );
+    if (existe) {
+      throw ArgumentError("Esta numero de cedula ya existe");
+    }
     Persona nuevaPersona = Persona(
       tipoDocumento: tipoDocumento,
       numeroDocumento: numeroDocumento,
@@ -39,5 +45,10 @@ class ControllerPersona extends ChangeNotifier {
     return _personasRegistradas
         .where((persona) => rolesParteB.contains(persona.obtenerRol))
         .toList();
+  }
+
+  void limpiarPersonas() {
+    _personasRegistradas.clear();
+    notifyListeners();
   }
 }
